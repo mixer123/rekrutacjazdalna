@@ -140,7 +140,7 @@ class Kandydat(models.Model):
         return status
 
     def __str__(self):
-        return f'{self.user.last_name}, {self.user.second_name}'
+        return f'{self.user.last_name}, {self.user.first_name}'
 
     def save(self):
         if self.user.is_authenticated and self.user.username=='admin':

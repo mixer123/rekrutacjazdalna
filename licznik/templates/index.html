@@ -11,6 +11,7 @@
 {% if user.is_authenticated %}
   <div class="niezalogowany">
   Jesteś zalogowany <font color="blue"> {{ user.username }}!</font>
+      Witaj {{ kandydat.user.first_name}}
   </div>
   <p><a href="{% url 'logout' %}">Wyloguj</a></p>
 {% else %}

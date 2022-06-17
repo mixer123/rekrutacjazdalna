@@ -31,31 +31,39 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                         {% if request.user.is_superuser %}
+                        {% if request.user.is_superuser %}
                             <li class="nav-item">
-
                               <a class="nav-link active" aria-current="page" href="/admin/">Administracja</a>
                             </li>
-
                             <li class="nav-item">
                               <a class="nav-link active" aria-current="page" href="/uploadfile/">Upload</a>
                             </li>
+                        {%  endif %}
+                        {% if not request.user.is_authenticated %}
+                                <li class="nav-item">
+                                  <a class="nav-link active" aria-current="page" href="/accounts/signup/">Rejestracja</a>
+                                </li>
                          {%  endif %}
-                        <li class="nav-item">
-                          <a class="nav-link active" aria-current="page" href="/accounts/signup/">Rejestracja</a>
-                        </li>
                         {% if request.user.is_superuser %}
-                         <li class="nav-item">
-                          <a class="nav-link active" aria-current="page" href="/zestawienie/">Zestawienie</a>
-                        </li>
-                           {%  endif %}
+                             <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="/zestawienie/">Zestawienie</a>
+                             </li>
+                        {%  endif %}
+                        {% if not request.user.is_superuser and  request.user.is_authenticated %}
                         <li class="nav-item">
-                          <a class="nav-link active" aria-current="page" href="/wybierzklase/">Zapisz się</a>
+                          <a class="nav-link active" aria-current="page" href="/wybierzklase/">Wybierz klasę</a>
                         </li>
-
-                        <li class="nav-item">
-                          <a class="nav-link active" aria-current="page" href="/zmienlogin/">Zmień login</a>
-                        </li>
+                        {%  endif %}
+                        {% if not request.user.is_superuser and  request.user.is_authenticated %}
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="/zmienlogin/">Zmień dane</a>
+                            </li>
+                         {%  endif %}
+                        {% if not request.user.is_superuser and  request.user.is_authenticated %}
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="/zmienklase/">Zmień klasę</a>
+                            </li>
+                          {%  endif %}
 
 
                       </ul>
