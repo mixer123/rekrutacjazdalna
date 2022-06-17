@@ -17,6 +17,7 @@ urlpatterns = [
     path('zmienklase/', views.zmienclas, name="zmienclas-page"),
     path('zestawienieklasy/', views.zestawienieklasy, name="zestawienieklasy-page"),
     path('zestawienie/', views.zestawienie, name="zestawienie-page"),
+    path('uploadfile/', views.uploadfile, name="uploadfile-page"),
     # path('zestawienie/',views.zestawienie, name="zestawienie-page" ),
     # path('admin/', views.admin_page, name="admin-page"),
     # path('uploadfile/', views.uploadfile, name="uploadfile-page"),

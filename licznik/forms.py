@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-
+from django.core.validators import FileExtensionValidator
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -13,3 +13,11 @@ class KandydatForm(forms.ModelForm):
     class Meta:
         model = Kandydat
         fields = ['clas']
+
+
+
+class UploadForm(forms.Form):
+    docfile = forms.FileField(
+        label='Dołącz plik csv',
+        help_text='max. 1MB',
+        validators=[FileExtensionValidator(allowed_extensions=['csv'])])

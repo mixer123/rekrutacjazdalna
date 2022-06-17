@@ -105,7 +105,7 @@ class Kandydat(models.Model):
     (0, 0),
     (3, 3),
 )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, editable=False)
     clas =  models.ForeignKey(Klasa, null=True, on_delete=models.SET_NULL, verbose_name='Klasa')
     document  = models.ForeignKey(Oryginal, null=True, on_delete=models.SET_NULL, verbose_name='Dokument')
     internat = models.BooleanField(default=False, verbose_name='Internat')

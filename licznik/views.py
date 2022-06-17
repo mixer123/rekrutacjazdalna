@@ -24,9 +24,9 @@ def starting_page(request):
         patern = request.user
         user = User.objects.get(username=patern)
         kandydat = Kandydat(user_id=user.id)
-    else:
-        pass
-    return render(request, 'index.html',{'kandydat':kandydat})
+        return render(request, 'index.html', {'kandydat': kandydat})
+
+    return render(request, 'index.html')
 
 
 @login_required(login_url='/accounts/login')
@@ -106,3 +106,68 @@ def zestawienie(request):
     all_klas = Klasa.objects.all()
     return render(request, 'zestawienie.html',{'all_klas': all_klas})
 
+
+@login_required(login_url='login')
+def uploadfile(request):
+    try:
+        Upload.objects.all().delete()
+        list_oc = []
+        for i in Ocena.objects.all():
+            list_oc.append(i.ocena)
+        ocena_min = sorted(list_oc)[0]
+        ocena_id=Ocena.objects.get(ocena=ocena_min)
+        dir = 'media/'
+
+        for f in os.listdir(dir):
+            os.remove(os.path.join(dir, f))
+        # Handle file upload
+        if request.method == 'POST':
+            form = UploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                docfile = Upload(file = request.FILES['docfile'])
+                docfile.save()
+                firstfile = Upload.objects.all()[0].file
+
+                with open('media/' + str(firstfile), newline='') as csvfile:
+                     spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+                     for row in spamreader:
+                           row_strip_0=row[0].strip()
+                           row_strip_1 = row[1].strip()
+                           row_strip_2 = row[2].strip()
+                           row_strip_3 = row[3].strip()
+                           row_strip_4 = row[4].strip()
+                           row_strip_5 = row[5].strip()
+                           row_strip_6 = str(row[6].strip())
+                           user = User(password=row_strip_0,
+                                       username=row_strip_1,
+                                       first_name=row_strip_2,
+                                       second_name=row_strip_3,
+                                       last_name=row_strip_4,
+                                       email=row_strip_5,
+                                       pesel = row_strip_6)
+                           user.save()
+                           kandydat = Kandydat(
+                                        user=user,
+                                         j_pol_egz=0,
+                                         mat_egz=0,
+                                         suma_pkt=0,
+                                         j_obcy_egz=0,
+                                         j_pol_oc=ocena_id,
+                                         mat_oc=ocena_id,
+                                         biol_oc=ocena_id,
+                                         inf_oc=ocena_id,
+                                         )
+
+                           kandydat.save()
+
+                return redirect('/')
+        else:
+            form = UploadForm() # A empty, unbound form
+    except IndexError:
+        return redirect('/error/')
+
+    # Load documents for the list page
+    documents = Upload.objects.all()
+
+    # Render list page with the documents and the form
+    return render(request, 'uploadfile.html', {'documents': documents, 'form': form})
