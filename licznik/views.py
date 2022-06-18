@@ -1,6 +1,7 @@
 import csv
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
@@ -131,7 +132,7 @@ def uploadfile(request):
                 with open('media/' + str(firstfile), newline='') as csvfile:
                      spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
                      for row in spamreader:
-                           row_strip_0=row[0].strip()
+                           row_strip_0 = make_password(row[0].strip())
                            row_strip_1 = row[1].strip()
                            row_strip_2 = row[2].strip()
                            row_strip_3 = row[3].strip()
